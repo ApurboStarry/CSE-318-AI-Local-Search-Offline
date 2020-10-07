@@ -171,14 +171,76 @@ double penalty(VVI coursesTakenByStudents, VI colors) {
         totalPenalty += 1 << (5 - difference);
       }
     }
-    cout << endl;
   }
 
   return totalPenalty / coursesTakenByStudents.size();
 }
 
 VI kempeChain(VVI g, int vertices, VI colors) {
+  // randomly choose a vertex;
+  // among the other vertices connected to this vertex randomly choose
+  // another vertex
+  // try to extend the chain containing only two colours of this vertices
+  int firstVertex = rand() % vertices + 1;
+  VI connectedVertices;
+  for(int i = 1; i <= vertices; i++) {
+    if(g[firstVertex][i] == 1) {
+      connectedVertices.push_back(i);
+    }
+  }
+  int anotherVertex = connectedVertices[rand() % connectedVertices.size()];
+
+  int firstColor = colors[firstVertex];
+  int anotherColor = colors[anotherVertex];
+
+  vector<bool> isInKempeChain(vertices+1, false);
+  queue<int> q;
+  q.push(firstVertex);
+  q.push(anotherVertex);
+
+  isInKempeChain[firstVertex] = true;
+  isInKempeChain[anotherVertex] = true;
+
+  // cout << firstVertex << " " << anotherVertex << endl;
+
+  while(!q.empty()) {
+    int s = q.front();
+    q.pop();
+    for(int i = 1; i <= vertices; i++) {
+      if(g[s][i] == 1 && !isInKempeChain[i] && (colors[i] == firstColor || colors[i] == anotherColor)) {
+        q.push(i);
+        isInKempeChain[i] = true;
+      }
+    }
+  }
+
   
+  for(int i = 1; i <= vertices; i++) {
+    if(isInKempeChain[i]) {
+      if(colors[i] == firstColor) {
+        colors[i] = anotherColor;
+      } else {
+        colors[i] = firstColor;
+      }
+    }
+  }
+
+  return colors;
+}
+
+int getNumberOfUniqueColors(VI colors) {
+  // cout << "Colors: ";
+  // for(int i = 1; i <= vertices; i++) {
+  //   cout << colors[i] << " ";
+  // }
+  // cout << endl;
+
+  set<int> c;
+  for(int i = 1; i < colors.size(); i++) {
+    c.insert(colors[i]);
+  }
+
+  return c.size();
 }
 
 int main(int argc, char** argv) {
@@ -258,16 +320,14 @@ int main(int argc, char** argv) {
   //   cout << endl;
   // }
 
+  // Scheme 1: DSatur + kempeChain
   VI colors = dSatur(g, vertices);
   colors = kempeChain(g, vertices, colors);
+  cout << "Total Number of time slots: " << getNumberOfUniqueColors(colors) << endl;
 
-  cout << "Colors: ";
-  for(int i = 1; i <= vertices; i++) {
-    cout << colors[i] << " ";
-  }
-  cout << endl;
+  cout << "Penalty: " << penalty(coursesTakenByStudents, colors) << endl;
 
-  cout << penalty(coursesTakenByStudents, colors) << endl;
+  // Scheme 2: 
 
   crs.close();
   stu.close();
