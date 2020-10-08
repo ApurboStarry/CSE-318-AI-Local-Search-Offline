@@ -1,2 +1,35 @@
 g++ 1605082.cpp -o 1605082
-./1605082 "Toronto/1custom.crs" "Toronto/1custom.stu"
+echo "Test Set: car-f-92"
+echo "******************"
+./1605082 "Toronto/car-f-92.crs" "Toronto/car-f-92.stu"
+
+echo ""
+echo ""
+echo "Test Set: car-s-91"
+echo "******************"
+./1605082 "Toronto/car-s-91.crs" "Toronto/car-s-91.stu"
+
+echo ""
+echo ""
+echo "Test Set: car-s-91"
+echo "******************"
+./1605082 "Toronto/ear-f-83.crs" "Toronto/ear-f-83.stu"
+
+echo ""
+echo ""
+echo "Test Set: hec-s-92"
+echo "******************"
+./1605082 "Toronto/hec-s-92.crs" "Toronto/hec-s-92.stu"
+
+echo ""
+echo ""
+echo "Test Set: kfu-s-93"
+echo "******************"
+./1605082 "Toronto/kfu-s-93.crs" "Toronto/kfu-s-93.stu"
+
+echo ""
+echo ""
+echo "Test Set: yor-f-83"
+echo "******************"
+./1605082 "Toronto/yor-f-83.crs" "Toronto/yor-f-83.stu"
+

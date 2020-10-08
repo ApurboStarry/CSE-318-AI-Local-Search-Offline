@@ -7,6 +7,86 @@ typedef pair<int, int> pii;
 typedef vector<int> VI;
 typedef vector<VI> VVI;
 
+VI largestDegree(VVI g, int vertices) {
+  VI degree(vertices + 1);
+  for (int i = 1; i <= vertices; i++)
+  {
+    int count = 0;
+    for (int j = 1; j <= vertices; j++)
+    {
+      if (g[i][j] == 1)
+      {
+        count++;
+      }
+    }
+    degree[i] = count;
+  }
+
+  VI colors(vertices + 1, -1);
+  int maxDegreeNode;
+  int maxDegree = -1;
+
+  for (int i = 1; i <= vertices; i++)
+  {
+    if (maxDegree < degree[i])
+    {
+      maxDegree = degree[i];
+      maxDegreeNode = i;
+    }
+  }
+
+  colors[maxDegreeNode] = 0;
+  for(int asdf = 1; asdf < vertices; asdf++) {
+    int maxDeg = -1;
+    int maxDegNode;
+    for(int i = 1; i <= vertices; i++) {
+      if(colors[i] == -1 && maxDeg < degree[i]) {
+        maxDeg = degree[i];
+        maxDegNode = i;
+      }
+    }
+
+    VI colorsAlreadyUsed;
+    int vertexToBeColored = maxDegNode;
+
+    for(int i = 1; i <= vertices; i++) {
+      if(g[vertexToBeColored][i] == 1 && colors[i] != -1) {
+        colorsAlreadyUsed.push_back(colors[i]);
+      }
+    }
+
+    sort(colorsAlreadyUsed.begin(), colorsAlreadyUsed.end());
+    
+    // cout << "colors already used: ";
+    // for(int x : colorsAlreadyUsed) {
+    //   cout << x << " ";
+    // }
+    // cout << endl;
+    // cout << "Vertex to be coloured: " << vertexToBeColored << endl;
+
+    if(colorsAlreadyUsed.size() == 0) {
+      colors[vertexToBeColored] = 0;
+      continue;
+    }
+
+    if(colorsAlreadyUsed[0] != 0) {
+      colors[vertexToBeColored] = 0;
+    } else {
+      for(int i = 0; i < colorsAlreadyUsed.size() - 1; i++) {
+        if(colorsAlreadyUsed[i+1] - colorsAlreadyUsed[i] > 1) {
+          colors[vertexToBeColored] = colorsAlreadyUsed[i] + 1;
+        }
+      }
+    }
+
+    if(colors[vertexToBeColored] == -1) {
+      colors[vertexToBeColored] = colorsAlreadyUsed[colorsAlreadyUsed.size() - 1] + 1;
+    }
+  }
+
+  return colors;
+}
+
 VI dSatur(VVI g, int vertices) {
   VI degree(vertices+1);
   for(int i = 1; i <= vertices; i++) {
@@ -320,14 +400,23 @@ int main(int argc, char** argv) {
   //   cout << endl;
   // }
 
-  // Scheme 1: DSatur + kempeChain
+  // Scheme 1: DSatur + Kempe Chain
   VI colors = dSatur(g, vertices);
   colors = kempeChain(g, vertices, colors);
-  cout << "Total Number of time slots: " << getNumberOfUniqueColors(colors) << endl;
 
+  cout << "Scheme 1: " << endl;
+  cout << "#########" << endl;
+  cout << "Total Number of time slots: " << getNumberOfUniqueColors(colors) << endl;
   cout << "Penalty: " << penalty(coursesTakenByStudents, colors) << endl;
 
-  // Scheme 2: 
+  // Scheme 2: Largest Degree + kempe chain
+  VI colors2 = largestDegree(g, vertices);
+  colors2 = kempeChain(g, vertices, colors2);
+
+  cout << "\nScheme 2: " << endl;
+  cout << "#########" << endl;
+  cout << "Total Number of time slots: " << getNumberOfUniqueColors(colors2) << endl;
+  cout << "Penalty: " << penalty(coursesTakenByStudents, colors2) << endl;
 
   crs.close();
   stu.close();
