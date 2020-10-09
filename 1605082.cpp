@@ -256,6 +256,28 @@ double penalty(VVI coursesTakenByStudents, VI colors) {
   return totalPenalty / coursesTakenByStudents.size();
 }
 
+double penalty2(VVI coursesTakenByStudents, VI coulors) {
+  double totalPenaly = 0;
+
+  for(int i = 0; i < coursesTakenByStudents.size(); i++) {
+    double tempPenalty = 0;
+    for(int j = 0; j < coursesTakenByStudents[i].size() - 1; j++) {
+      for(int k = j+1; k < coursesTakenByStudents[i].size(); k++) {
+        int difference = abs(coursesTakenByStudents[i][j] - coursesTakenByStudents[i][k]);
+
+        if(difference <= 5) {
+          tempPenalty += 1 << (5 - difference);
+        }
+      }
+    }
+
+    tempPenalty /= coursesTakenByStudents[i].size();
+    totalPenaly += tempPenalty;
+  }
+
+  return totalPenaly / coursesTakenByStudents.size();
+}
+
 VI kempeChain(VVI g, int vertices, VI colors) {
   // randomly choose a vertex;
   // among the other vertices connected to this vertex randomly choose
@@ -417,6 +439,27 @@ int main(int argc, char** argv) {
   cout << "#########" << endl;
   cout << "Total Number of time slots: " << getNumberOfUniqueColors(colors2) << endl;
   cout << "Penalty: " << penalty(coursesTakenByStudents, colors2) << endl;
+
+  // Write into .sol file
+
+  // string fileName = argv[1];
+  // fileName += "1.sol";
+  // freopen(fileName.c_str(), "w", stdout);
+
+  // for(int i = 0; i < courses.size(); i++) {
+  //   printf("%d %d\n", courses[i], (int)colors[courses[i].first]);
+  // }
+
+  // fclose(stdout);
+
+  // fileName = argv[1];
+  // fileName += "2.sol";
+  // freopen(fileName.c_str(), "w", stdout);
+  // for(int i = 0; i < courses.size(); i++) {
+  //   printf("%d %d\n", courses[i], colors2[courses[i].first]);
+  // }
+
+  // fclose(stdout);
 
   crs.close();
   stu.close();
