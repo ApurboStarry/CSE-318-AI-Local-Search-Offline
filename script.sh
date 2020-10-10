@@ -1,11 +1,11 @@
 g++ 1605082.cpp -o 1605082
-echo "Test Set: car-f-92"
+echo "Test Set: car-f-91"
 echo "******************"
 ./1605082 "Toronto/car-s-91.crs" "Toronto/car-s-91.stu"
 
 echo ""
 echo ""
-echo "Test Set: car-s-91"
+echo "Test Set: car-s-92"
 echo "******************"
 ./1605082 "Toronto/car-f-92.crs" "Toronto/car-f-92.stu"
 
@@ -29,7 +29,7 @@ echo "******************"
 
 echo ""
 echo ""
-echo "Test Set: kfu-s-93"
+echo "Test Set: tre-s-92"
 echo "******************"
 ./1605082 "Toronto/tre-s-92.crs" "Toronto/tre-s-92.stu"
 
